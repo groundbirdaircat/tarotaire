@@ -3,6 +3,8 @@ import type { Color } from '$classes/color';
 export type SlotContent = () => any; //eslint-disable-line
 export type AnyFn = (...args: any[]) => any; //eslint-disable-line
 export type EventWithTarget<T> = Event & { currentTarget: T };
+export type WheelEventWithTarget<T> = WheelEvent & { currentTarget: T };
+export type MouseEventWithTarget<T> = MouseEvent & { currentTarget: T };
 
 export type Dict<T> = Record<string, T>;
 

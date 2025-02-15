@@ -24,18 +24,18 @@ $min-breakpoints: (
   beforeWide: $bp-z,
   beforeUltrawide: $bp-z,
   beforeSuperultrawide: $bp-z,
-  
+
   afterMobile: $bp-m,
   afterTablet: $bp-t,
   afterLaptop: $bp-l,
   afterDesktop: $bp-d,
   afterWide: $bp-w,
   afterUltrawide: $bp-u,
-  
+
   isSmall: $bp-z,
   isMedium: $bp-t,
   isLarge: $bp-d,
-  
+
   isMobile: $bp-z,
   isTablet: $bp-m,
   isLaptop: $bp-t,
@@ -52,18 +52,18 @@ $max-breakpoints: (
   beforeWide: $bp-d,
   beforeUltrawide: $bp-w,
   beforeSuperultrawide: $bp-u,
-  
+
   afterMobile: $bp-s,
   afterTablet: $bp-s,
   afterLaptop: $bp-s,
   afterDesktop: $bp-s,
   afterWide: $bp-s,
   afterUltrawide: $bp-s,
-  
+
   isSmall: $bp-t,
   isMedium: $bp-d,
   isLarge: $bp-s,
-  
+
   isMobile: $bp-m,
   isTablet: $bp-t,
   isLaptop: $bp-l,

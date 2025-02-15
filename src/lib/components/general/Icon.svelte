@@ -12,8 +12,13 @@
     class?: string;
   } = $props();
 
+  let iconType = $derived(Icon[type]);
+
+  // svelte-ignore state_referenced_locally
+  if (!iconType) throw new Error(`missing icon type: ${type}`);
+
   const replaceContent = `<svg xmlns="http://www.w3.org/2000/svg" class="${iconClass}"`;
-  const svgContent = Icon[type].replace('<svg', replaceContent);
+  const svgContent = $derived(iconType.replace('<svg', replaceContent));
 
   let svgColored = $derived(
     color ? svgContent.replaceAll(/fill="(?!none")[^"]+"/gi, `fill="${color}"`) : svgContent

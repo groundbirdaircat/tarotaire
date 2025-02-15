@@ -2,7 +2,7 @@ import { PUBLIC_ENVIRONMENT } from '$env/static/public';
 import { freeze, makeLogObj } from './util';
 
 export class Config {
-  static projectName = 'default-project-name'; // TODO
+  static projectName = 'tarotaire';
 
   // Dev
   static isDevEnvironment = ['dev', 'int'].includes(PUBLIC_ENVIRONMENT);
