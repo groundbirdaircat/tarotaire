@@ -1,32 +1,30 @@
 <script lang="ts">
   import TarotCard from '$components/TarotCard.svelte';
+  import type { WithTarget } from '$models/general';
   import { allCards } from '$assets/cards';
-  import type { WheelEventWithTarget } from '$models/general';
 
   const on = {
-    wheelContainer(e: WheelEventWithTarget<HTMLDivElement>) {
-      if (e.deltaY != 0) {
-        e.currentTarget.scrollLeft += e.deltaY;
-      }
+    wheelContainer(e: WithTarget<WheelEvent, HTMLDivElement>) {
+      if (!e.deltaY) return;
+
+      e.currentTarget.scrollLeft += e.deltaY;
+      e.preventDefault();
     }
   };
 </script>
 
-<div class="wh-full flex-center px-16">
-  <div
-    class="flex gap-8 max-w-full overflow-auto px-16 py-8 fading-container"
-    onwheel={on.wheelContainer}
-  >
+<div class="flex wh-full overflow-auto" onwheel={on.wheelContainer}>
+  <div class="flex gap-8 px-16 py-8 m-auto">
     {#each allCards as card, i}
-      <div class="flex-center-col gap-8">
-        <div class="my-auto">
-          <TarotCard {card} isReversed={Boolean(i % 2)} />
-        </div>
+      <div class="self-end">
+        <TarotCard {card} isReversed={Boolean(i % 2)} />
 
-        <div
-          class="text-xs text-neutral-300 font-bold border border-neutral-500 rounded-full flex-center w-8 h-8 ps-[.25ch]"
-        >
-          {i + 1}
+        <div class="flex-justify pt-6">
+          <div
+            class="flex-center text-xs text-neutral-300 font-bold border-2 border-neutral-800 rounded-full w-8 h-8 ps-[.25ch]"
+          >
+            {i + 1}
+          </div>
         </div>
       </div>
     {/each}

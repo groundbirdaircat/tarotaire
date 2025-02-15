@@ -29,17 +29,17 @@
   .fading-container {
     -webkit-mask-image: linear-gradient(
       to right,
-      transparent,
+      rgba(0, 0, 0, .3),
       black 6rem,
       black calc(100% - 6rem),
-      transparent
+      rgba(0, 0, 0, .3)
     );
     mask-image: linear-gradient(
       to right,
-      transparent,
+      rgba(0, 0, 0, .3),
       black 6rem,
       black calc(100% - 6rem),
-      transparent
+      rgba(0, 0, 0, .3)
     );
   }
 }

@@ -14,5 +14,4 @@ export interface Card {
   };
   type: string;
   description: string;
-  description2: string;
 }
