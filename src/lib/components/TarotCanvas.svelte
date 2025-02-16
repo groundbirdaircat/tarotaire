@@ -9,7 +9,7 @@
   $inspect(innerWidth, innerHeight);
 
   $effect(() => {
-    browser && canvas.start(canvasRef);
+    browser && canvas.init(canvasRef);
     return () => canvas.cancel();
   });
 </script>
@@ -20,5 +20,6 @@
   bind:this={canvasRef}
   width={innerWidth}
   height={innerHeight}
-  class="absolute wh-full top-0 left-0 z-0 invert hue-rotate-180 no-select"
+  class="absolute top-0 left-0 z-0 invert hue-rotate-180 no-select transition-all duration-1000"
+  class:opacity-25={!canvas.isAnimating}
 ></canvas>

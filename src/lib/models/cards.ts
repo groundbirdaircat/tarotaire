@@ -15,3 +15,7 @@ export interface Card {
   type: string;
   description: string;
 }
+
+export interface DrawnCard extends Card {
+  isReversed: boolean;
+}

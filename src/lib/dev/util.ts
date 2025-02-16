@@ -26,3 +26,18 @@ export function freeze(object: Dict<any>) {
     }
   });
 }
+
+export function gradientLog(text: string) {
+  const split = text.split('');
+  const styles: string[] = [];
+  let log = '';
+  const adj = Math.random() * 140;
+  let current = 280 + adj;
+  const spread = 120 / split.length;
+  split.forEach(letter => {
+    log += '%c' + letter;
+    current += spread;
+    styles.push(`color: hsl(${Math.floor(current)}, 100%, 50%); `);
+  });
+  console.log(log, ...styles);
+}

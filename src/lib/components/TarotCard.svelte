@@ -1,20 +1,19 @@
 <script lang="ts">
   import { elementColorMap, getImageUrl } from '$assets/cards';
   import { stopPropagation } from '$actions/events';
+  import type { DrawnCard } from '$models/cards';
   import { type Icons } from '$models/icon';
-  import type { Card } from '$models/cards';
   import Icon from './general/Icon.svelte';
   import { Color } from '$classes/color';
 
   let {
-    isReversed,
     card
   }: {
-    card: Card;
-    isReversed: boolean;
+    card: DrawnCard;
   } = $props();
 
-  let { description, meanings, element, planet, image, sign, name, suit } = $derived(card);
+  let { description, meanings, element, planet, image, sign, name, suit, isReversed } =
+    $derived(card);
   let currentMeanings = $derived(isReversed ? meanings.reversed : meanings.upright);
   let imgUrl = $derived(getImageUrl(image));
 
@@ -41,7 +40,7 @@
     />
   </div>
 
-  <div class="flex-center-col h-16">
+  <div class="flex-align-col h-16">
     <div class="text-2xl font-bold">
       {name}
     </div>
@@ -50,7 +49,7 @@
     {/if}
   </div>
 
-  <div class="flex-center pt-4 pb-6 justify-between">
+  <div class="flex-center pb-6 justify-between">
     <div class="flex-col gap-4">
       <div class="flex-center-col gap-2 text-xs w-16">
         <div class="flex-center h-12 w-12 rounded-full border border-neutral-700 overflow-clip">
