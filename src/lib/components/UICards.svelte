@@ -5,6 +5,7 @@
   import { deck } from '$lib/state/deck.svelte';
   import { fade } from 'svelte/transition';
   import { tick } from 'svelte';
+  import { allCards } from '$assets/cards';
 
   const on = {
     wheelContainer(e: WithTarget<WheelEvent, HTMLDivElement>) {
@@ -16,24 +17,14 @@
   };
 </script>
 
-{#if !canvas.isAnimating}
-  <div
-    class="relative flex w-full h-[calc(100%-4rem)] overflow-auto z-10"
-    onwheel={on.wheelContainer}
-  >
-    <div class="flex gap-8 px-16 py-8 m-auto">
+{#if !canvas.isAnimating && deck.hasDrawn}
+  <div class="relative flex-center-col wh-full overflow-auto z-10" onwheel={on.wheelContainer}>
+    <div class="flex gap-8 px-16 pt-24 pb-8 m-auto">
       {#each deck.spread as card, index}
+        {@const delay = 100 + (200 * index - (index / allCards.length) * (200 * index))}
         {#await tick() then}
-          <div class="self-end" in:fade={{ duration: 2000, delay: 100 + 200 * index }}>
-            <TarotCard {card} />
-
-            <div class="flex-justify pt-6">
-              <div
-                class="flex-center text-xs bg-black text-neutral-300 font-bold border-2 border-neutral-800 rounded-full w-8 h-8 ps-[.25ch]"
-              >
-                {index + 1}
-              </div>
-            </div>
+          <div class="self-end" in:fade={{ duration: 2000, delay }}>
+            <TarotCard {card} {index} />
           </div>
         {/await}
       {/each}

@@ -12,7 +12,7 @@
 </script>
 
 <div class="relative wh-full overflow-clip">
-  <div class="wh-full overflow-auto">
+  <div class="wh-full overflow-auto flex-justify">
     {@render children()}
   </div>
 

@@ -109,23 +109,27 @@ class CanvasState {
 
   queueCards: DrawnCard[] = [];
   queueRunning = false;
+  queueCycleCount = 0;
 
   runQueue() {
     if (!this.queueCards.length) {
       this.queueRunning = false;
+      this.queueCycleCount = 0;
       gradientLog('stopping queue');
       return;
     }
 
     gradientLog('running queue');
     this.queueRunning = true;
+    this.queueCycleCount++;
 
     !this.isAnimating && this.start();
 
     const card = this.queueCards.shift()!;
     this.allCanvasCards.push(new CanvasCard(this.ctx, card));
 
-    timeout(500).then(this.runQueue.bind(this));
+    const waitTime = 400 - this.queueCycleCount * 7 + Math.random() * 200;
+    timeout(waitTime).then(this.runQueue.bind(this));
   }
 
   init(ref: HTMLCanvasElement) {

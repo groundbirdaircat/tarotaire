@@ -1,61 +1,148 @@
 <script lang="ts">
+  import TarotaireLogo from '$assets/tarotaire-logo.svg';
   import { canvas } from '$lib/state/canvas.svelte';
+  import { fade, fly } from 'svelte/transition';
   import { deck } from '$lib/state/deck.svelte';
+  import { quadInOut } from 'svelte/easing';
+  import { tick } from 'svelte';
+  import { timeout } from '$utils/general';
+  import { allCards } from '$assets/cards';
+
+  let cardCount = $state(3);
+
+  let currentLoopId = $state('');
+
+  const fn = {
+    async loopPlus(count: number, id: string) {
+      if (id != currentLoopId || cardCount == allCards.length) {
+        return;
+      }
+
+      cardCount++;
+
+      let waitTime = 300;
+      if (count > 5 && count < 15) {
+        waitTime = 100;
+      } else if (count >= 15) {
+        waitTime = 50;
+      }
+
+      await timeout(waitTime);
+
+      fn.loopPlus(++count, id);
+    },
+    async loopMinus(count: number, id: string) {
+      if (id != currentLoopId || cardCount == 1) {
+        return;
+      }
+
+      cardCount--;
+
+      let waitTime = 300;
+      if (count > 5 && count < 15) {
+        waitTime = 100;
+      } else if (count >= 15) {
+        waitTime = 50;
+      }
+
+      await timeout(waitTime);
+
+      fn.loopMinus(++count, id);
+    }
+  };
 
   const on = {
-    clickDraw1() {
-      deck.draw(1);
+    async clickDraw() {
+      deck.draw(cardCount);
     },
-    clickDraw3() {
-      deck.draw(3);
-    },
-    clickDraw5() {
-      deck.draw(5);
-    },
-    clickReset() {
+    async clickReset() {
       deck.reset();
+    },
+    mousedownPlus() {
+      currentLoopId = crypto.randomUUID();
+      fn.loopPlus(0, currentLoopId);
+    },
+    mousedownMinus() {
+      currentLoopId = crypto.randomUUID();
+      fn.loopMinus(0, currentLoopId);
+    },
+    mouseupPlus() {
+      currentLoopId = '';
+    },
+    mouseupMinus() {
+      currentLoopId = '';
+    },
+    mouseleavePlus() {
+      currentLoopId = '';
+    },
+    mouseleaveMinus() {
+      currentLoopId = '';
     }
   };
 </script>
 
-<div class="w-full h-16 flex relative z-0">
-  {#if !canvas.isAnimating}
-    <div class="mx-auto flex pt-8 gap-4">
-      {#if deck.cardsLeft}
-        <button
-          onclick={on.clickDraw1}
-          class="border border-neutral-500 hover:border-white rounded-xl px-4 active:scale-95 transition-transform"
-        >
-          draw 1 card
-        </button>
-      {/if}
-
-      {#if deck.cardsLeft >= 3}
-        <button
-          onclick={on.clickDraw3}
-          class="border border-neutral-500 hover:border-white rounded-xl px-4 active:scale-95 transition-transform"
-        >
-          draw 3 cards
-        </button>
-      {/if}
-
-      {#if deck.cardsLeft >= 5}
-        <button
-          onclick={on.clickDraw5}
-          class="border border-neutral-500 hover:border-white rounded-xl px-4 active:scale-95 transition-transform"
-        >
-          draw 5 cards
-        </button>
-      {/if}
-
-      {#if deck.hasDrawn}
-        <button
-          onclick={on.clickReset}
-          class="border border-neutral-500 hover:border-white rounded-xl px-4 active:scale-95 transition-transform"
-        >
-          reset
-        </button>
-      {/if}
+{#if deck.hasDrawn && !canvas.isAnimating}
+  {#await tick() then}
+    <div
+      in:fly={{ y: -300, duration: 1000, delay: 2000 }}
+      out:fly|global={{ y: -100, duration: 1000 }}
+      class="absolute top-0 rounded-full bg-neutral-950 flex-justify border-4 border-neutral-900 h-56 w-56 -translate-y-40 pt-44 z-20"
+    >
+      <button
+        onclick={on.clickReset}
+        class="border border-neutral-500 hover:border-white rounded-xl px-4 active:scale-95 transition-transform h-fit text-sm"
+      >
+        reset
+      </button>
     </div>
-  {/if}
-</div>
+  {/await}
+{:else if !canvas.isAnimating}
+  {#await tick() then}
+    <div
+      in:fly={{ y: -50, duration: 3000, easing: quadInOut }}
+      out:fade|global={{ duration: 2000, easing: quadInOut }}
+      class="w-full flex-col pt-24 z-0"
+    >
+      <div class="mx-auto max-w-[40rem]">
+        <img src={TarotaireLogo} alt="Tarotaire" />
+      </div>
+
+      <div class="mx-auto pt-4">how many from the deck shall fate unveil</div>
+
+      <div class="mx-auto pt-8">
+        <div
+          class="border border-neutral-700 flex-align-col w-24 rounded-xl text-neutral-400 bg-neutral-950"
+        >
+          <div class="h-28 flex-center text-5xl">{cardCount}</div>
+          <div class="flex border-t border-neutral-700 w-full h-12 text-3xl">
+            <button
+              class="hover:text-white pb-1 flex-center flex-1 border-r border-neutral-700 hover:bg-neutral-900"
+              onmousedown={on.mousedownMinus}
+              onmouseup={on.mouseupMinus}
+              onmouseleave={on.mouseleaveMinus}
+            >
+              -
+            </button>
+            <button
+              class="hover:text-white pb-1 flex-center flex-1 hover:bg-neutral-900"
+              onmousedown={on.mousedownPlus}
+              onmouseup={on.mouseupPlus}
+              onmouseleave={on.mouseleavePlus}
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mx-auto pt-6 pb-24">
+        <button
+          class="border border-neutral-500 hover:border-white rounded-xl px-4 active:scale-95 transition-transform h-fit text-sm"
+          onclick={on.clickDraw}
+        >
+          draw
+        </button>
+      </div>
+    </div>
+  {/await}
+{/if}
