@@ -1,9 +1,11 @@
 <script lang="ts">
   import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
   import type { SlotContent, WithTarget } from '$models/general';
+  import { injectAnalytics } from '@vercel/analytics/sveltekit';
   import DevMenu from '$dev/DevMenu.svelte';
   import '../styles/tailwind.css';
   import '../styles/global.scss';
+
   let {
     children
   }: {
@@ -24,6 +26,7 @@
     }
   };
 
+  injectAnalytics();
   injectSpeedInsights();
 </script>
 
