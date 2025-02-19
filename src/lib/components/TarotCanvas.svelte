@@ -6,7 +6,6 @@
 
   let innerWidth = $state(0);
   let innerHeight = $state(0);
-  $inspect(innerWidth, innerHeight);
 
   $effect(() => {
     browser && canvas.init(canvasRef);

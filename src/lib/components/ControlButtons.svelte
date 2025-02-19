@@ -4,9 +4,9 @@
   import { fade, fly } from 'svelte/transition';
   import { deck } from '$lib/state/deck.svelte';
   import { quadInOut } from 'svelte/easing';
-  import { tick } from 'svelte';
-  import { timeout } from '$utils/general';
   import { allCards } from '$assets/cards';
+  import { timeout } from '$utils/general';
+  import { tick } from 'svelte';
 
   let cardCount = $state(3);
 
@@ -48,6 +48,9 @@
       await timeout(waitTime);
 
       fn.loopMinus(++count, id);
+    },
+    clearLoopId() {
+      currentLoopId = '';
     }
   };
 
@@ -67,16 +70,16 @@
       fn.loopMinus(0, currentLoopId);
     },
     mouseupPlus() {
-      currentLoopId = '';
+      fn.clearLoopId();
     },
     mouseupMinus() {
-      currentLoopId = '';
+      fn.clearLoopId();
     },
     mouseleavePlus() {
-      currentLoopId = '';
+      fn.clearLoopId();
     },
     mouseleaveMinus() {
-      currentLoopId = '';
+      fn.clearLoopId();
     }
   };
 </script>

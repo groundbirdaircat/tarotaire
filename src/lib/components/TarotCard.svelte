@@ -39,7 +39,7 @@
 </script>
 
 <div
-  class="relative hover:scale-105 hover:z-20 transition-transform duration-700 flex-align-col group"
+  class="relative hover:scale-105 hover:z-20 transition-transform duration-700 flex-align-col group mb-16"
 >
   <div
     class="min-w-80 max-w-80 border-4 border-neutral-800 rounded-2xl p-4 pb-6 relative bg-black shadow-xl z-10"
