@@ -17,6 +17,7 @@ class CanvasCard {
   img = new Image();
   card: DrawnCard;
   loaded = false;
+  hasEnteredView = false;
 
   scale = 0.25;
 
@@ -71,14 +72,23 @@ class CanvasCard {
 
     this.hue += t * 0.05;
 
-    // bounce bottom
-    if (this.isMovingDown && this.currentY + this.height > innerHeight) this.speedY *= -1;
+    const cardBottomY = this.currentY + this.height;
+    const cardRightX = this.currentX + this.width;
 
-    // prevent card from going below bottom
-    if (this.currentY + this.height > innerHeight) this.currentY = innerHeight - this.height;
+    if (this.hasEnteredView) {
+      // bounce bottom
+      if (this.isMovingDown && cardBottomY > innerHeight) this.speedY *= -1;
 
-    // remove when off screen
-    if (this.currentX < 0 - this.width || this.currentX > innerWidth) canvas.removeCard(this);
+      // prevent card from going below bottom
+      if (cardBottomY > innerHeight) this.currentY = innerHeight - this.height;
+
+      // remove when off screen
+      if (cardRightX < 0 || this.currentX > innerWidth) canvas.removeCard(this);
+    } else {
+      // enter view
+      if (cardBottomY > 0 && cardRightX > 0 && this.currentX < innerWidth)
+        this.hasEnteredView = true;
+    }
 
     this.draw();
   }
